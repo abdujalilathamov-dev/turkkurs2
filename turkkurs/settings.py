@@ -76,9 +76,12 @@ DATABASES = {
 # Render'da (yoki boshqa hostingda) DATABASE_URL muhit o'zgaruvchisi berilgan bo'lsa,
 # PostgreSQL'ga avtomatik ulanadi. Bu — bepul Render'dagi SQLite tozalanib ketish
 # muammosini hal qiladi, chunki PostgreSQL alohida, doimiy xizmat sifatida ishlaydi.
-DATABASE_URL = os.environ.get('DATABASE_URL')
+import os
+import dj_database_url
+
+DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://turkkurs_user:0fWjfBkXslGqne8qWJGfR0Fa72dnhvcn@dpg-da1ejqfqj5pc73cs6jh0-a.frankfurt-postgres.render.com/turkkurs_db_gc8x')
+
 if DATABASE_URL:
-    import dj_database_url
     DATABASES['default'] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
 
 AUTH_PASSWORD_VALIDATORS = [
