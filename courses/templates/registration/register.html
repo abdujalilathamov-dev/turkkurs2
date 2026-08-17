@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Ro'yxatdan o'tish{% endblock %}
+{% block content %}
+<div class="card auth-card">
+  <span class="section-tag">boshlaymiz</span>
+  <h1 style="font-size:22px; margin-bottom:20px;">Yangi hisob yarating</h1>
+
+  <a href="{% url 'google_login' %}" class="btn btn-ghost btn-block google-btn">
+    <span class="google-icon">G</span> Google orqali ro'yxatdan o'tish
+  </a>
+  <div class="auth-divider"><span>yoki</span></div>
+
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% if field.help_text %}<div class="helptext">{{ field.help_text }}</div>{% endif %}
+      {% if field.errors %}<ul class="errorlist">{{ field.errors }}</ul>{% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-block">Ro'yxatdan o'tish</button>
+  </form>
+  <p style="margin-top:16px; font-size:13.5px; color:var(--muted); text-align:center;">
+    Hisobingiz bormi? <a href="{% url 'login' %}" style="color:var(--violet); font-weight:600;">Kiring</a>
+  </p>
+</div>
+{% endblock %}

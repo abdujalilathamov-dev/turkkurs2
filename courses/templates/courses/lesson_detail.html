@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="breadcrumb" style="margin-bottom:16px; font-size:13px; color:var(--muted);">
+  <a href="{% url 'dashboard' %}" style="color:var(--violet);">Darslarim</a> / {{ lesson.level.name }} / {{ lesson.title }}
+</div>
+
+<div class="page-head">
+  <div>
+    <span class="section-tag">{{ lesson.level.code }} · dars</span>
+    <h1>{{ lesson.title }}</h1>
+  </div>
+  {% if completion %}
+  <span class="btn btn-ghost btn-sm" style="border-color:var(--teal); color:var(--teal);">✓ Tugatilgan — {{ completion.best_score_percent }}%</span>
+  {% endif %}
+</div>
+
+<div class="card" style="margin-bottom:24px;">
+  <div class="lesson-content">{{ lesson.content }}</div>
+  {% if lesson.video_url %}
+  <p style="margin-top:16px;"><a href="{{ lesson.video_url }}" target="_blank" class="btn btn-ghost btn-sm">🎬 Video darsni ko'rish</a></p>
+  {% endif %}
+</div>
+
+{% if vocabulary %}
+<h2 style="font-size:17px; margin-bottom:6px;">📖 Lug'at</h2>
+<div class="vocab-grid" style="margin-bottom:28px;">
+  {% for w in vocabulary %}
+  <div class="vocab-item">
+    <div class="vocab-tr">{{ w.turkish }}</div>
+    <div class="vocab-uz">{{ w.uzbek }}</div>
+    {% if w.example %}<div class="vocab-ex">"{{ w.example }}"</div>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if question_count %}
+<a href="{% url 'lesson_test' lesson.pk %}" class="btn btn-primary btn-lg">📝 Testni boshlash ({{ question_count }} savol) →</a>
+{% else %}
+<p style="color:var(--muted); font-size:13.5px;">Bu darsda hozircha test savollari yo'q.</p>
+{% endif %}
+{% endblock %}

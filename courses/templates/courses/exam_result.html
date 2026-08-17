@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Imtihon natijasi — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="result-hero {% if passed %}pass{% else %}fail{% endif %}">
+  <div class="result-emoji">{% if passed %}🏆{% else %}😔{% endif %}</div>
+  <div class="result-percent">{{ percent }}%</div>
+  <div class="result-sub">
+    {{ attempt.score }}/{{ attempt.total }} to'g'ri javob —
+    {% if passed %}Tabriklaymiz, siz imtihondan o'tdingiz!{% else %}O'tish balli {{ pass_threshold }}%. Darslarni takrorlab, qayta urinib ko'ring.{% endif %}
+  </div>
+  {% if passed and certificate %}
+  <a href="{% url 'certificate_view' certificate.pk %}" class="btn btn-gold" style="margin-top:22px;">🎓 Sertifikatni ko'rish</a>
+  {% elif not passed %}
+  <a href="{% url 'exam_info' %}" class="btn btn-ghost" style="margin-top:22px;">Qayta urinish</a>
+  {% endif %}
+</div>
+
+{% for r in results %}
+<div class="question-card">
+  <div class="question-num">Savol {{ forloop.counter }}</div>
+  <div class="question-text">{{ r.question.text }}</div>
+  <div class="option-list">
+    {% for value, label in r.question.options %}
+    <div class="option-label {% if value == r.question.correct_option %}correct{% elif value == r.chosen %}wrong{% endif %}">
+      <span class="option-letter">{{ value|upper }}</span>
+      <span>{{ label }}</span>
+      {% if value == r.question.correct_option %}<span style="margin-left:auto; color:var(--teal);">✓ to'g'ri</span>{% elif value == r.chosen %}<span style="margin-left:auto; color:var(--danger);">✕ sizning javobingiz</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+
+<a href="{% url 'dashboard' %}" class="btn btn-ghost">Darslarimga qaytish</a>
+{% endblock %}

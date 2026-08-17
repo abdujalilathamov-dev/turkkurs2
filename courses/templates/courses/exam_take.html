@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Imtihon topshirish — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="section-tag">yakuniy imtihon</span>
+    <h1>🎓 Omad tilaymiz!</h1>
+  </div>
+</div>
+
+<form method="post" action="{% url 'exam_take' %}">
+  {% csrf_token %}
+  {% for q in questions %}
+  <input type="hidden" name="question_ids" value="{{ q.id }}">
+  <div class="question-card">
+    <div class="question-num">Savol {{ forloop.counter }} / {{ questions|length }}</div>
+    <div class="question-text">{{ q.text }}</div>
+    <div class="option-list">
+      {% for value, label in q.options %}
+      <label class="option-label">
+        <input type="radio" name="q{{ q.id }}" value="{{ value }}" required>
+        <span class="option-letter">{{ value|upper }}</span>
+        <span>{{ label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-gold btn-lg">Imtihonni yakunlash ✓</button>
+</form>
+{% endblock %}

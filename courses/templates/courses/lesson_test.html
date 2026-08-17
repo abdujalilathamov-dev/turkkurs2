@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Test — {{ lesson.title }}{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="section-tag">test · {{ lesson.title }}</span>
+    <h1>Bilimingizni tekshiring</h1>
+  </div>
+</div>
+
+<form method="post">
+  {% csrf_token %}
+  {% for q in questions %}
+  <div class="question-card">
+    <div class="question-num">Savol {{ forloop.counter }} / {{ questions|length }}</div>
+    <div class="question-text">{{ q.text }}</div>
+    <div class="option-list">
+      {% for value, label in q.options %}
+      <label class="option-label">
+        <input type="radio" name="q{{ q.id }}" value="{{ value }}" required>
+        <span class="option-letter">{{ value|upper }}</span>
+        <span>{{ label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary btn-lg">Testni yakunlash ✓</button>
+</form>
+{% endblock %}

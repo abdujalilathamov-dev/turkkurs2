@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Sertifikatlarim — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="section-tag">yutuqlarim</span>
+    <h1>🎓 Sertifikatlarim</h1>
+  </div>
+</div>
+
+{% if certificates %}
+<div class="grid grid-2">
+  {% for cert in certificates %}
+  <a href="{% url 'certificate_view' cert.pk %}" class="card" style="border-color:var(--neon-gold);">
+    <div style="font-size:28px; margin-bottom:8px;">🏆</div>
+    <h3 style="margin-bottom:6px;">{{ cert.certificate_no }}</h3>
+    <p style="color:var(--muted); font-size:13px;">Berilgan sana: {{ cert.issued_at|date:"d-M, Y" }}</p>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty">
+  <h3>Hali sertifikatingiz yo'q</h3>
+  <p><a href="{% url 'dashboard' %}" style="color:var(--violet); font-weight:600;">Darslarni tugatib</a>, yakuniy imtihondan o'ting.</p>
+</div>
+{% endif %}
+{% endblock %}

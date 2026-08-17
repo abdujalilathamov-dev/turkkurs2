@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Reyting — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="section-tag">jamoaviy reyting</span>
+    <h1>🏆 Eng faol talabalar</h1>
+  </div>
+</div>
+
+{% if reyting %}
+<div>
+  {% for row in reyting %}
+  <div class="lb-row {% if row.user == user %}me{% endif %}">
+    <div class="lb-rank {% if row.rank == 1 %}top1{% elif row.rank == 2 %}top2{% elif row.rank == 3 %}top3{% endif %}">
+      {% if row.rank == 1 %}🥇{% elif row.rank == 2 %}🥈{% elif row.rank == 3 %}🥉{% else %}#{{ row.rank }}{% endif %}
+    </div>
+    <div class="lb-user">
+      <div class="name">{{ row.user.username }} {% if row.has_cert %}<span class="cert-mini">🎓</span>{% endif %}</div>
+      <div class="level">{{ row.done }} ta dars tugatilgan</div>
+    </div>
+    <div class="lb-points">{{ row.progress }}%</div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty">
+  <h3>Hali hech kim dars tugatmagan</h3>
+  <p>Birinchi bo'lib darslarni boshlang!</p>
+</div>
+{% endif %}
+{% endblock %}

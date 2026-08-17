@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Darslarim — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="hero-banner">
+  <svg class="hero-flag-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M62 20a30 30 0 1 0 0 60 24 24 0 1 1 0-60z" fill="#fff"/>
+    <path d="M67 38l3.5 9.5L80 48l-8 6 3 10-8-6-8 6 3-10-8-6 9.5-.5z" fill="#fff"/>
+  </svg>
+  <span class="eyebrow">Türkçe.Kurs'ga xush kelibsiz</span>
+  <h1>Hoş geldin, {{ user.username }}! 👋</h1>
+  <p>Turk tilini bosqichma-bosqich o'rganing — har bir darsni tugating, yakuniy imtihondan o'ting va rasmiy sertifikat qo'lga kiriting.</p>
+  <div class="hero-stats">
+    <div class="hero-stat-item">
+      <div class="num">{{ progress_percent }}%</div>
+      <div class="label">Umumiy progress</div>
+    </div>
+    <div class="hero-stat-item">
+      <div class="num">{{ completed_count }}/{{ total_lessons }}</div>
+      <div class="label">Tugatilgan darslar</div>
+    </div>
+    <div class="hero-stat-item">
+      <div class="num">{% if has_certificate %}✓{% else %}—{% endif %}</div>
+      <div class="label">Sertifikat holati</div>
+    </div>
+  </div>
+</div>
+
+{% if exam_eligible and not has_certificate %}
+<div class="card" style="margin-bottom:28px; border-color:var(--neon-gold); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+  <div>
+    <strong style="color:var(--neon-gold);">🎓 Siz barcha darslarni tugatdingiz!</strong>
+    <p style="color:var(--muted); font-size:13.5px; margin-top:4px;">Endi yakuniy imtihonga kirib, sertifikat olishingiz mumkin.</p>
+  </div>
+  <a href="{% url 'exam_info' %}" class="btn btn-gold">Imtihonga o'tish →</a>
+</div>
+{% elif has_certificate %}
+<div class="card" style="margin-bottom:28px; border-color:var(--teal); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+  <div>
+    <strong style="color:var(--teal);">🎉 Tabriklaymiz! Siz kursni muvaffaqiyatli yakunladingiz.</strong>
+  </div>
+  <a href="{% url 'certificate_view' certificate.pk %}" class="btn btn-ghost">Sertifikatni ko'rish →</a>
+</div>
+{% endif %}
+
+{% for item in levels_data %}
+<div class="level-block">
+  <div class="level-head">
+    <span class="level-badge">{{ item.level.code|default:"—" }}</span>
+    <span class="level-title">{{ item.level.name }}</span>
+    <span class="level-progress">{{ item.done }}/{{ item.total }} tugallandi</span>
+  </div>
+  <div class="lesson-list">
+    {% for lesson in item.lessons %}
+    <a href="{% url 'lesson_detail' lesson.pk %}" class="lesson-row {% if lesson.id in completed_ids %}done{% endif %}">
+      <span class="lesson-check">{% if lesson.id in completed_ids %}✓{% else %}{{ forloop.counter }}{% endif %}</span>
+      <span class="lesson-name">{{ lesson.title }}</span>
+      <span class="lesson-meta">{{ lesson.question_count }} savol</span>
+    </a>
+    {% empty %}
+    <div class="empty"><p>Bu darajada hali dars yo'q.</p></div>
+    {% endfor %}
+  </div>
+</div>
+{% empty %}
+<div class="empty">
+  <h3>Hali kurs darajalari qo'shilmagan</h3>
+  <p>Admin panel orqali darajalar va darslar qo'shiladi.</p>
+</div>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Boshqaruv paneli — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="section-tag">faqat admin uchun · {{ today|date:"d-M, Y" }}</span>
+    <h1>📊 Boshqaruv paneli</h1>
+  </div>
+  <a href="/admin/" class="btn btn-ghost">⚙️ Django admin</a>
+</div>
+
+<div class="grid grid-4" style="margin-bottom:14px;">
+  <div class="stat-card">
+    <div class="num">{{ total_users }}</div>
+    <div class="label">Jami talabalar</div>
+  </div>
+  <div class="stat-card accent-green">
+    <div class="num">{{ today_registered }}</div>
+    <div class="label">Bugun ro'yxatdan o'tganlar</div>
+  </div>
+  <div class="stat-card accent-gold">
+    <div class="num">{{ active_today_count }}</div>
+    <div class="label">Bugun faol bo'lganlar</div>
+  </div>
+  <div class="stat-card accent-pink">
+    <div class="num">{{ total_certificates }}</div>
+    <div class="label">Jami sertifikatlar</div>
+  </div>
+</div>
+
+<div class="grid grid-3" style="margin-bottom:32px;">
+  <div class="stat-card">
+    <div class="num">{{ today_certificates }}</div>
+    <div class="label">Bugun berilgan sertifikatlar</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ pass_rate }}%</div>
+    <div class="label">Imtihondan o'tish foizi</div>
+  </div>
+  <div class="stat-card">
+    <div class="num">{{ total_lessons }}</div>
+    <div class="label">Jami darslar soni</div>
+  </div>
+</div>
+
+<div class="admin-grid">
+  <div>
+    <h2 class="panel-title">🏆 Talabalar reytingi</h2>
+    <div>
+      {% for row in reyting %}
+      <div class="lb-row">
+        <div class="lb-rank {% if row.rank == 1 %}top1{% elif row.rank == 2 %}top2{% elif row.rank == 3 %}top3{% endif %}">
+          {% if row.rank == 1 %}🥇{% elif row.rank == 2 %}🥈{% elif row.rank == 3 %}🥉{% else %}#{{ row.rank }}{% endif %}
+        </div>
+        <div class="lb-user">
+          <div class="name">
+            <span class="dot {% if row.active_today %}dot-online{% else %}dot-offline{% endif %}"></span>
+            {{ row.user.username }} {% if row.has_cert %}🎓{% endif %}
+          </div>
+          <div class="level">{{ row.done }} dars · qo'shilgan: {{ row.joined|date:"d-M, Y" }}</div>
+        </div>
+        <div class="lb-points">{{ row.progress }}%</div>
+      </div>
+      {% empty %}
+      <div class="empty"><h3>Hali talabalar yo'q</h3></div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div>
+    <h2 class="panel-title">🎓 So'nggi berilgan sertifikatlar</h2>
+    <div class="mini-list" style="margin-bottom:28px;">
+      {% for c in recent_certificates %}
+      <div class="mini-row">
+        <span><strong>{{ c.user.username }}</strong></span>
+        <span class="meta">{{ c.certificate_no }} · {{ c.issued_at|date:"d-M" }}</span>
+      </div>
+      {% empty %}
+      <div class="empty"><p>Hali sertifikat berilmagan</p></div>
+      {% endfor %}
+    </div>
+
+    <h2 class="panel-title">🆕 So'nggi ro'yxatdan o'tganlar</h2>
+    <div class="mini-list">
+      {% for u in recent_registrations %}
+      <div class="mini-row">
+        <span><strong>{{ u.username }}</strong></span>
+        <span class="meta">{{ u.date_joined|date:"d-M, Y H:i" }}</span>
+      </div>
+      {% empty %}
+      <div class="empty"><p>Hali hech kim yo'q</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

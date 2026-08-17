@@ -1,0 +1,7 @@
+{% extends "admin/index.html" %}
+{% block content %}
+  <a href="{% url 'admin_dashboard' %}" style="display:inline-block; margin:0 0 20px; padding:12px 20px; background:#6C4CE0; color:#fff; border-radius:10px; font-weight:700; text-decoration:none; font-family:'Segoe UI',sans-serif;">
+    📊 Chiroyli boshqaruv paneliga o'tish (talabalar statistikasi va reyting)
+  </a>
+  {{ block.super }}
+{% endblock %}

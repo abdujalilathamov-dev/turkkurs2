@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Sertifikat {{ certificate.certificate_no }} — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="certificate" id="certificate-area">
+  <div class="cert-eyebrow">Türkçe.Kurs — muvaffaqiyat sertifikati</div>
+  <div class="cert-title">🎓 SERTIFIKAT</div>
+  <div class="cert-sub">Ushbu sertifikat quyidagi shaxsga beriladi:</div>
+  <div class="cert-name">{{ certificate.user.get_full_name|default:certificate.user.username }}</div>
+  <div class="cert-desc">
+    Turk tili kursini muvaffaqiyatli yakunlagani va yakuniy imtihondan
+    o'tgani uchun ushbu sertifikat bilan taqdirlanadi.
+  </div>
+  <div class="cert-meta">
+    <div><strong>{{ certificate.certificate_no }}</strong>Sertifikat raqami</div>
+    <div><strong>{{ certificate.issued_at|date:"d-M, Y" }}</strong>Berilgan sana</div>
+    <div><strong>{{ certificate.exam_attempt.percent }}%</strong>Imtihon natijasi</div>
+  </div>
+</div>
+
+<div class="form-actions" style="margin-top:24px; justify-content:center;">
+  <button onclick="window.print()" class="btn btn-primary">🖨️ Chop etish / PDF saqlash</button>
+  <a href="{% url 'dashboard' %}" class="btn btn-ghost">Darslarimga qaytish</a>
+</div>
+
+<style>
+@media print {
+  .nav, .footer, .form-actions { display:none !important; }
+  body { background:#0A0E1A; }
+}
+</style>
+{% endblock %}

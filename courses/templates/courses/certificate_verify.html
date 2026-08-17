@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Sertifikatni tekshirish — Türkçe Kurs{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <span class="section-tag">ochiq tekshiruv</span>
+    <h1>🔍 Sertifikatni tekshirish</h1>
+  </div>
+</div>
+
+<div class="card" style="max-width:480px; margin-bottom:24px;">
+  <form method="get">
+    <div class="form-group">
+      <label for="raqam">Sertifikat raqamini kiriting</label>
+      <input type="text" name="raqam" id="raqam" class="input" placeholder="Masalan: TR-2026-00001" value="{{ cert_no }}">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Tekshirish</button>
+  </form>
+</div>
+
+{% if searched %}
+  {% if certificate %}
+  <div class="card" style="border-color:var(--teal);">
+    <h3 style="color:var(--teal); margin-bottom:10px;">✓ Sertifikat haqiqiy</h3>
+    <p style="font-size:14.5px; margin-bottom:6px;"><strong>Ism:</strong> {{ certificate.user.get_full_name|default:certificate.user.username }}</p>
+    <p style="font-size:14.5px; margin-bottom:6px;"><strong>Sertifikat raqami:</strong> {{ certificate.certificate_no }}</p>
+    <p style="font-size:14.5px;"><strong>Berilgan sana:</strong> {{ certificate.issued_at|date:"d-M, Y" }}</p>
+  </div>
+  {% else %}
+  <div class="card" style="border-color:var(--danger);">
+    <h3 style="color:var(--danger);">✕ Bunday sertifikat topilmadi</h3>
+    <p style="color:var(--muted); font-size:13.5px; margin-top:6px;">Raqamni tekshirib, qayta urinib ko'ring.</p>
+  </div>
+  {% endif %}
+{% endif %}
+{% endblock %}
